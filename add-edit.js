@@ -5,8 +5,8 @@ const database = require('./database.js')
 //---admin adding and editing stuff ---processes
 //edit drug
 router.put('/updateDrugs' , (req,res)=>{
-    const {name, description, category, price } = req.body
-    database.query('UPDATE drugs SET name= ? , price = ?, description= ?, category_id =? WHERE drug_id = ? ',[name,price, description, category], (err,rows)=>{
+    const {drug_id, name, description, category_id, price } = req.body
+    database.query('UPDATE drugs SET name= ? , price = ?, description= ?, category_id =? WHERE drug_id = ? ',[name,price, description, category_id, drug_id], (err,rows)=>{
         if(err) throw err;
         else{
             res.send({message: "Successfully updated record"})
@@ -87,7 +87,7 @@ router.put('/updateCategory', (req, res) => {
     const {name, age, email, drugs, gender, password } = req.body;
     database.query(
       'INSERT INTO users (name, age, email, drugs, gender ,password) VALUES (?, ?, ?, ?, ?, ?)',
-      [name, age, email, password],
+      [name, age, email,drugs, gender, password,],
       (err, result) => {
         if (err) {
           console.error('Error inserting new user:', err);

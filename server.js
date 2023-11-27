@@ -6,6 +6,8 @@ const bodyParser =require('body-parser')
 app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
 app.use(bodyParser.urlencoded({limit : "10mb", extended: false}))
+var tokens = require('./tokens.js')
+
 //const connectDb = require('./mongodb.js')
 
 app.listen(PORT,()=>console.log(`Server is running on port ${PORT}`))
@@ -22,8 +24,8 @@ app.set('view engine','ejs')
 const drugsRouter = require('./routes/drugs');
 const adminRouter =require('./routes/admin')
 
-app.use('/admin', adminRouter)
-app.use('/drugs', drugsRouter)
+app.use('/admin',tokens.ensureToken, adminRouter)
+app.use('/drugs',tokens.ensureToken, drugsRouter)
 //----------------------------------------tokens part remove later
 var tokens = require('./tokens.js')
 
@@ -31,7 +33,6 @@ const loginRouter =require('./login')
 app.use('/login', loginRouter)
 
 
-var tokens = require('./tokens.js')
 app.get('/nyagaka',tokens.ensureToken, (req,res)=>{
     res.render("index"), {title: "Success Vera!"}
     
@@ -41,5 +42,5 @@ const registerRouter =require('./register.js')
 app.use('/register', registerRouter)
 //update records and stuff
 const processRouter =require('./add-edit.js')
-app.use('/processes', processRouter)
+app.use('/processes',tokens.ensureToken, processRouter)
 
