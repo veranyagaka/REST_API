@@ -25,7 +25,7 @@ const drugsRouter = require('./routes/drugs');
 const adminRouter =require('./routes/admin')
 
 app.use('/admin',tokens.ensureToken, adminRouter)
-app.use('/drugs',tokens.ensureToken, drugsRouter)
+app.use('/drugs', drugsRouter)
 //----------------------------------------tokens part remove later
 var tokens = require('./tokens.js')
 
